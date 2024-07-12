@@ -1,0 +1,43 @@
+// Dashboard.js
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+import axios from 'axios';
+
+const Dashboard = () => {
+  const [sensorData, setSensorData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get('http://localhost:3001/data');
+      setSensorData(response.data);
+    };
+    fetchData();
+  }, []);
+
+  const chartData = {
+    labels: sensorData.map(data => new Date(data.timestamp).toLocaleString()),
+    datasets: [
+      {
+        label: 'Temperature',
+        data: sensorData.map(data => data.temperature),
+        fill: false,
+        borderColor: 'red',
+      },
+      {
+        label: 'Humidity',
+        data: sensorData.map(data => data.humidity),
+        fill: false,
+        borderColor: 'blue',
+      },
+    ],
+  };
+
+  return (
+    <div>
+      <h2>Environmental Monitoring Dashboard</h2>
+      <Line data={chartData} />
+    </div>
+  );
+};
+
+export default Dashboard;
