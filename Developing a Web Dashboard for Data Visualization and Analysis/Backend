@@ -1,0 +1,20 @@
+// dashboard.js
+const express = require('express');
+const mongoose = require('mongoose');
+const SensorData = require('./models/SensorData');
+
+const app = express();
+
+mongoose.connect('mongodb://localhost/SmartCity', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.get('/data', async (req, res) => {
+  const data = await SensorData.find().sort({ timestamp: -1 }).limit(100);
+  res.json(data);
+});
+
+app.listen(3001, () => {
+  console.log('Dashboard server running on port 3001');
+});
