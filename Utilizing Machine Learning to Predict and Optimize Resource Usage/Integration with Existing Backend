@@ -1,0 +1,19 @@
+// prediction.js
+const express = require('express');
+const axios = require('axios');
+
+const app = express();
+app.use(express.json());
+
+app.post('/predict', async (req, res) => {
+  const { temperature, humidity } = req.body;
+  const response = await axios.post('http://localhost:5000/predict', {
+    temperature,
+    humidity,
+  });
+  res.json(response.data);
+});
+
+app.listen(3002, () => {
+  console.log('Prediction server running on port 3002');
+});
