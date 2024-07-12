@@ -1,0 +1,24 @@
+// server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const SensorData = require('./models/SensorData');
+
+const app = express();
+app.use(bodyParser.json());
+
+mongoose.connect('mongodb://localhost/SmartCity', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.post('/data', async (req, res) => {
+  const { temperature, humidity } = req.body;
+  const sensorData = new SensorData({ temperature, humidity, timestamp: new Date() });
+  await sensorData.save();
+  res.status(201).send('Data received and saved');
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
