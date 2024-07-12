@@ -1,0 +1,10 @@
+// models/SensorData.js
+const mongoose = require('mongoose');
+
+const sensorDataSchema = new mongoose.Schema({
+  temperature: Number,
+  humidity: Number,
+  timestamp: Date,
+});
+
+module.exports = mongoose.model('SensorData', sensorDataSchema);
